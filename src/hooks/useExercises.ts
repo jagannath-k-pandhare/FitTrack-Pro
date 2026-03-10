@@ -19,9 +19,7 @@ export function useExercises() {
       setLoading(false)
     }
 
-    loadExercises()cl
-
+    loadExercises()
   }, [])
-
   return { exercises, setExercises, loading }
 }
