@@ -5,7 +5,8 @@ import ExerciseInput from "./ExerciseInput"
 
 function ExerciseList(){
 
-    const { exercises, setExercises, loading } = useExercises()
+    // const { exercises, setExercises, loading } = useExercises()
+    const { exercises, setExercises, loading, error } = useExercises()
 
     const [newExercise, setNewExercise] = useState("")
     
@@ -38,6 +39,13 @@ function ExerciseList(){
     }
     if (loading) {
         return <p className="p-6">Loading exercises...</p>
+    }
+    if (error) {
+    return (
+        <p className="text-red-500">
+        {error}
+        </p>
+    )
     }
     return(
         <div className="bg-white p-6 rounded-xl shadow">
