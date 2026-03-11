@@ -1,32 +1,48 @@
-import { useState, useEffect } from "react"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { fetchExercises } from "../services/exerciseService"
-
-type Exercise = {
-  id: number
-  name: string
-}
+import type { Exercise } from "../types/exercise"
+import { 
+  addExercise as addExerciseService,
+  deleteExercise as deleteExerciseService,
+  updateExercise as updateExerciseService
+} from "../services/exerciseService"
 
 export function useExercises() {
+const queryClient = useQueryClient()
 
-  const [exercises, setExercises] = useState<Exercise[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const addMutation = useMutation({
+  mutationFn: addExerciseService,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["exercises"] })
+  }
+})
+const deleteMutation = useMutation({
+  mutationFn: deleteExerciseService,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["exercises"] })
+  }
+})
+const updateMutation = useMutation({
+  mutationFn: ({ id, name }: { id: number; name: string }) =>
+    updateExerciseService(id, name),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["exercises"] })
+  }
+})
 
-  useEffect(() => {
+  const query = useQuery<Exercise[]>({
+    queryKey: ["exercises"],
+    queryFn: fetchExercises
+  })
 
-    const loadExercises = async () => {
-      try {
-          const data = await fetchExercises()
-          setExercises(data)
-        } catch (err: any) {
-          setError(err.message)
-        } finally {
-          setLoading(false)
-        }
-    }
+  return {
+  exercises: query.data ?? [],
+  loading: query.isLoading,
+  error: query.error,
+  addExercise: addMutation.mutate,
+  deleteExercise: deleteMutation.mutate,
+  updateExercise: updateMutation.mutate
+}
 
-    loadExercises()
-  }, [])
-   // return { exercises, setExercises, loading }
-  return { exercises, setExercises, loading, error }
+
 }

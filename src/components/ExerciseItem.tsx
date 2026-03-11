@@ -1,4 +1,5 @@
 import {useState} from "react"
+import type { Exercise } from "../types/exercise"
 
 type ExerciseItemProps = {
     id: number

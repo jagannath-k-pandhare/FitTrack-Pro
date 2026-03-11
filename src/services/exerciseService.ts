@@ -1,7 +1,4 @@
-type Exercise = {
-  id: number
-  name: string
-}
+import type { Exercise } from "../types/exercise"
 
 export async function fetchExercises(): Promise<Exercise[]> {
   
@@ -24,4 +21,43 @@ export async function fetchExercises(): Promise<Exercise[]> {
 
     }, 2000)
   })
+}
+
+// export async function addExercise(name: string) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         id: Date.now(),
+//         name
+//       })
+//     }, 500)
+//   })
+// }
+
+// export async function deleteExercise(id: number) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(id)
+//     }, 500)
+//   })
+// }
+
+// export async function updateExercise(id: number, name: string) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({ id, name })
+//     }, 500)
+//   })
+// }
+
+export async function addExercise(name: string) {
+  return { id: Date.now(), name }
+}
+
+export async function deleteExercise(id: number) {
+  return id
+}
+
+export async function updateExercise(id: number, name: string) {
+  return { id, name }
 }
