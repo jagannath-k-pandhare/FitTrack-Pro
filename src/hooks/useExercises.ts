@@ -16,12 +16,39 @@ const queryClient = useQueryClient()
     queryClient.invalidateQueries({ queryKey: ["exercises"] })
   }
 })
+// const deleteMutation = useMutation({
+//   mutationFn: deleteExerciseService,
+//   onSuccess: () => {
+//     queryClient.invalidateQueries({ queryKey: ["exercises"] })
+//   }
+// })
+
 const deleteMutation = useMutation({
   mutationFn: deleteExerciseService,
-  onSuccess: () => {
+
+  onMutate: async (id: number) => {
+    await queryClient.cancelQueries({ queryKey: ["exercises"] })
+
+    const previousExercises = queryClient.getQueryData<Exercise[]>(["exercises"])
+
+    queryClient.setQueryData<Exercise[]>(["exercises"], (old) =>
+      old ? old.filter(e => e.id !== id) : []
+    )
+
+    return { previousExercises }
+  },
+
+  onError: (_err, _id, context) => {
+    if (context?.previousExercises) {
+      queryClient.setQueryData(["exercises"], context.previousExercises)
+    }
+  },
+
+  onSettled: () => {
     queryClient.invalidateQueries({ queryKey: ["exercises"] })
   }
 })
+
 const updateMutation = useMutation({
   mutationFn: ({ id, name }: { id: number; name: string }) =>
     updateExerciseService(id, name),

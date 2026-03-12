@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage"
 import WorkoutsPage from "./pages/WorkoutsPage"
 import NutritionPage from "./pages/NutritionPage"
 import GoalsPage from "./pages/GoalsPage"
+import WorkoutLogPage from "./pages/WorkoutLogPage"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/workouts" element={<WorkoutsPage />} />
+          <Route path="/workout-log" element={<WorkoutLogPage />}/>
           <Route path="/nutrition" element={<NutritionPage />} />
           <Route path="/goals" element={<GoalsPage />} />
         </Routes>

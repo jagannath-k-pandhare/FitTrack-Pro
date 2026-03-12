@@ -29,6 +29,18 @@ function Sidebar() {
           Workouts
         </NavLink>
 
+        <NavLink 
+          to="/workout-log"
+          className={({isActive}) =>
+            isActive
+              ? "text-blue-600 font-semibold"
+              : "text-gray-700 hover:text-blue-600"
+          }
+          >
+            Workout Log
+        </NavLink>
+
+
         <NavLink
           to="/nutrition"
           className={({ isActive }) =>
