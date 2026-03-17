@@ -4,8 +4,10 @@ import { useExercises } from "../hooks/useExercises";
 import EditWorkoutModal from "./EditWorkoutModal";
 import type { Workout } from "../types/workout";
 import toast from "react-hot-toast";
+import DeleteWorkoutModal from "./DeleteWorkoutModal";
 
 function WorkoutList() {
+  const [deleting, setDeleting] = useState<Workout | null>(null);
   const { workouts, loading, deleteWorkout } = useWorkouts();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("date-desc");
@@ -109,7 +111,7 @@ function WorkoutList() {
               </button>
               <button
                 className="text-blue-600 text-sm"
-                onClick={() => handleDelete(w.id)}
+                onClick={() => setDeleting(w)}
               >
                 Delete
               </button>
@@ -119,6 +121,12 @@ function WorkoutList() {
       </div>
       {editing && (
         <EditWorkoutModal workout={editing} onClose={() => setEditing(null)} />
+      )}
+      {deleting && (
+        <DeleteWorkoutModal
+          workout={deleting}
+          onClose={() => setDeleting(null)}
+        />
       )}
     </div>
   );
