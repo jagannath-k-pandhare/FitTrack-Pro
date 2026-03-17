@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { fetchWorkouts, addWorkout} from "../services/workoutService"
-// import type { Workout } from "../types/workout"
+import { fetchWorkouts, addWorkout, updateWorkout, deleteWorkout} from "../services/workoutService"
 
 export function useWorkouts(){
     const queryClient = useQueryClient()
@@ -11,14 +10,31 @@ export function useWorkouts(){
 
     const addMutation = useMutation({
         mutationFn: addWorkout,
-        onSuccess: () =>{
+        onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["workouts"]})
+        }
+    })
+
+    const updateMutation = useMutation({
+        mutationFn: updateWorkout,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["workouts"]})
+        }
+    })
+
+    const deleteMutation = useMutation({
+        mutationFn: deleteWorkout,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["workout"]})
         }
     })
 
     return {
         workouts: query.data ?? [],
         loading: query.isLoading,
-        addWorkout: addMutation.mutate
+        error: query.error,
+        addWorkout: addMutation.mutate,
+        updateWorkout: updateMutation.mutate,
+        deleteWorkout: deleteMutation.mutate
     }
 }

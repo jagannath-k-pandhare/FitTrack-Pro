@@ -1,20 +1,19 @@
-import { useState } from "react"
-import { useWorkouts } from "../hooks/useWorkouts"
-import { useExercises } from "../hooks/useExercises"
+import { useState } from "react";
+import { useWorkouts } from "../hooks/useWorkouts";
+import { useExercises } from "../hooks/useExercises";
+import toast from "react-hot-toast";
 
 function WorkoutForm() {
+  const { addWorkout } = useWorkouts();
+  const { exercises } = useExercises();
 
-  const { addWorkout } = useWorkouts()
-  const { exercises } = useExercises()
-
-  const [exercise, setExercise] = useState("")
-  const [sets, setSets] = useState(0)
-  const [reps, setReps] = useState(0)
-  const [weight, setWeight] = useState(0)
+  const [exercise, setExercise] = useState("");
+  const [sets, setSets] = useState(0);
+  const [reps, setReps] = useState(0);
+  const [weight, setWeight] = useState(0);
 
   const handleSubmit = () => {
-
-    if (!exercise) return
+    if (!exercise) return;
 
     addWorkout({
       id: Date.now(),
@@ -22,21 +21,20 @@ function WorkoutForm() {
       sets,
       reps,
       weight,
-      date: new Date().toISOString()
-    })
+      date: new Date().toISOString(),
+    });
 
-    setExercise("")
-    setSets(0)
-    setReps(0)
-    setWeight(0)
-  }
+    toast.success("Workout saved");
+
+    setExercise("");
+    setSets(0);
+    setReps(0);
+    setWeight(0);
+  };
 
   return (
     <div className="bg-white p-6 rounded-xl shadow mb-6">
-
-      <h2 className="text-xl font-bold mb-4">
-        Log Workout
-      </h2>
+      <h2 className="text-xl font-bold mb-4">Log Workout</h2>
 
       <select
         className="border p-2 rounded w-full mb-3"
@@ -50,7 +48,6 @@ function WorkoutForm() {
             {ex.name}
           </option>
         ))}
-
       </select>
 
       <input
@@ -83,9 +80,8 @@ function WorkoutForm() {
       >
         Save Workout
       </button>
-
     </div>
-  )
+  );
 }
 
-export default WorkoutForm
+export default WorkoutForm;
